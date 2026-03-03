@@ -51,6 +51,14 @@ const parseUsdPerOunce = (text: string): number => {
 };
 
 const parseSourceUpdatedAt = (text: string): string | undefined => {
+	const nyFooterTimestamp = text.match(
+		/([A-Za-z]{3,9}\s+[0-9]{1,2}(?:st|nd|rd|th)?\s+[0-9]{4},\s+[0-9]{1,2}:[0-9]{2}(?::[0-9]{2})?\s*(?:am|pm)\s+NY\s+time)/i,
+	);
+
+	if (nyFooterTimestamp) {
+		return nyFooterTimestamp[1].trim();
+	}
+
 	const timeWithZone = text.match(
 		/goldprice\.org\s*-\s*([0-9]{1,2}:[0-9]{2}\s*[A-Z]{2}\s*Time)/i,
 	);
@@ -69,14 +77,33 @@ const parseSourceUpdatedAt = (text: string): string | undefined => {
 	return undefined;
 };
 
+const readTickTimestamp = async (page: Page): Promise<string | undefined> => {
+	try {
+		const tickText = await page.locator("#gpxTickTab_date").innerText();
+		const parsed = parseSourceUpdatedAt(tickText);
+		return parsed;
+	} catch {
+		return undefined;
+	}
+};
+
 export const parseGoldPrice = async (
 	page: Page,
 	supplier: SupplierTarget,
 ): Promise<ParsedGoldRow[]> => {
 	await waitForGoldPriceData(page);
 
-	const text = await page.locator("body").innerText();
-	const sourceUpdatedAtRaw = parseSourceUpdatedAt(text);
+	let text = await page.locator("body").innerText();
+	let sourceUpdatedAtRaw =
+		(await readTickTimestamp(page)) ?? parseSourceUpdatedAt(text);
+
+	if (!sourceUpdatedAtRaw && typeof page.waitForTimeout === "function") {
+		await page.waitForTimeout(1500);
+		text = await page.locator("body").innerText();
+		sourceUpdatedAtRaw =
+			(await readTickTimestamp(page)) ?? parseSourceUpdatedAt(text);
+	}
+
 	const usdPerOunce = parseUsdPerOunce(text);
 	const usdRaw = usdPerOunce.toString();
 

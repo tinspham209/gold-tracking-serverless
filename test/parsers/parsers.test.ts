@@ -94,7 +94,7 @@ describe("supplier parsers", () => {
 		expect(rows[0].sourceUpdatedAtRaw).toBe("04:15 NY Time");
 	});
 
-	it("parses GoldPrice USD from HOLDINGS ticker fallback", async () => {
+	it("parses GoldPrice with NY footer last_updated", async () => {
 		const supplier = SUPPLIERS.find((item) => item.supplierId === "GOLDPRICE")!;
 		const rows = await parseGoldPrice(
 			fakePage(fixture("goldprice-holdings.html")),
@@ -103,7 +103,10 @@ describe("supplier parsers", () => {
 
 		expect(rows).toHaveLength(1);
 		expect(rows[0].product).toBe("Gold spot (USD/oz)");
-		expect(rows[0].buyRaw).toBe("5299");
-		expect(rows[0].sellRaw).toBe("5299");
+		expect(rows[0].buyRaw).toBe("5143");
+		expect(rows[0].sellRaw).toBe("5143");
+		expect(rows[0].sourceUpdatedAtRaw).toBe(
+			"Mar 3rd 2026, 09:20:05 am NY time",
+		);
 	});
 });
