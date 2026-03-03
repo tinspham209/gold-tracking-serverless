@@ -56,6 +56,7 @@ export const formatRunMessage = (
 		...header,
 		"",
 		"Gold Price now:",
+		"| Source | Target | Buy | Sell | Spread | Updated At",
 		...body,
 		...(errorSection.length ? ["", ...errorSection] : []),
 	].join("\n");

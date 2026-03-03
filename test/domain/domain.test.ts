@@ -51,6 +51,9 @@ describe("domain normalize + metrics", () => {
 
 		expect(message).toContain("Crawl at:");
 		expect(message).toContain("Gold Price now:");
+		expect(message).toContain(
+			"| Source | Target | Buy | Sell | Spread | Updated At",
+		);
 		expect(message).toContain("03/03/2026 11:32");
 	});
 });

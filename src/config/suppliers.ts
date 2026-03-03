@@ -21,7 +21,7 @@ export const SUPPLIERS: SupplierTarget[] = [
 	},
 	{
 		supplierId: "KIM_KHANH_VIET_HUNG",
-		supplierName: "Kim Khánh Việt Hùng",
+		supplierName: "KKVH",
 		sourceUrl: "https://kimkhanhviethung.vn/tra-cuu-gia-vang.html",
 		products: ["Vàng 999.9"],
 	},
