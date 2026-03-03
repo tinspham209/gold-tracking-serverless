@@ -1,0 +1,27 @@
+{
+	"name": "gold-tracking-serverless",
+	"version": "0.1.0",
+	"private": true,
+	"description": "Serverless Vietnamese gold price crawler and notifier",
+	"type": "module",
+	"engines": {
+		"node": ">=20",
+		"pnpm": "10.x"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"test": "vitest run",
+		"crawl": "tsx src/main.ts"
+	},
+	"dependencies": {
+		"dotenv": "^17.3.1",
+		"playwright": "^1.54.2"
+	},
+	"devDependencies": {
+		"@types/node": "^24.3.0",
+		"tsx": "^4.20.5",
+		"typescript": "^5.9.2",
+		"vitest": "^3.2.4"
+	}
+}

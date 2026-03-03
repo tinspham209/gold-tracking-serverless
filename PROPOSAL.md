@@ -4,13 +4,13 @@ _Last updated: 2026-03-03_
 
 ## 1) Objective
 
-Build a **serverless, stateless** crawler that runs every 30 minutes, extracts gold prices from selected Vietnamese suppliers using Playwright, computes in-memory metrics, and sends webhook alerts to **Google Chat** and/or **Telegram**.
+Build a **serverless, stateless** crawler that runs every 2 hours, extracts gold prices from selected Vietnamese suppliers using Playwright, computes in-memory metrics, and sends webhook alerts to **Google Chat** and/or **Telegram**.
 
 ## 2) Scope and non-scope
 
 ### In scope
 
-- GitHub Actions scheduler (`*/30 * * * *`)
+- GitHub Actions scheduler (`0 */2 * * *`)
 - Node.js + TypeScript + Playwright crawler CLI
 - Per-supplier parser modules
 - In-memory normalization + metrics (`spread`)
@@ -84,6 +84,9 @@ gold-tracking/
     parsers/
     domain/
     notify/
+  README.md
+  ARCHITECTURE.md
+  DEVELOPMENT.md
   PROPOSAL.md
   PROGRESS.md
 ```
@@ -128,6 +131,7 @@ Message semantics should stay aligned with Google Chat output.
 ## 8) Resilience policy
 
 - Isolate failures by supplier
+- Isolate failures by notification channel (one channel failure must not block another)
 - Bounded retries for navigation/parsing
 - Bounded retries for webhook HTTP `429/5xx`
 - Final status:
@@ -148,12 +152,13 @@ Message semantics should stay aligned with Google Chat output.
 
 - Never log secrets/tokenized URLs
 - Keep logs structured and minimal (`supplier`, `duration`, `parsedCount`, `status`, `errorCode`)
+- Local runs load environment variables from `.env` before resolving config values
 
 ## 10) GitHub Actions workflow plan
 
 Triggers:
 
-- `schedule: "*/30 * * * *"`
+- `schedule: "0 */2 * * *"`
 - `workflow_dispatch`
 
 Core job steps:
@@ -192,7 +197,7 @@ Optional: upload log artifact when run fails.
 
 ## 13) Acceptance criteria
 
-- workflow runs every 30 minutes
+- workflow runs every 2 hours
 - at least one successful supplier parse sends notification
 - notification includes buy/sell/spread/source updated time
 - partial failures still produce useful output
@@ -203,6 +208,10 @@ Optional: upload log artifact when run fails.
 If not explicitly changed during implementation:
 
 - send to both channels when both are configured
-- message language: Vietnamese
+- message language: English
 - value display: full VND formatting (e.g., `17,700,000`)
+- source updated time display: `DD/MM/YYYY HH:mm` (Vietnam local timezone)
 - failed suppliers retried in same run with bounded attempts, then defer to next schedule
+- Node runtime: Node.js 20 with pnpm scripts (`crawl`, `typecheck`, `test`)
+- unit test runner: Vitest with local HTML fixtures (no live website assertions in CI)
+- when no notifier is configured, run remains successful in **log-only mode**
