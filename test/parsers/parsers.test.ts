@@ -9,6 +9,7 @@ import { parse24h } from "../../src/parsers/parser24h.js";
 import { parseHoaKimNguyen } from "../../src/parsers/parserHoaKimNguyen.js";
 import { parseKimKhanhVietHung } from "../../src/parsers/parserKimKhanhVietHung.js";
 import { parseNgocThinh } from "../../src/parsers/parserNgocThinh.js";
+import { parseGoldPrice } from "../../src/parsers/parserGoldPrice.js";
 
 const fixture = (name: string): string => {
 	return readFileSync(join(process.cwd(), "test", "fixtures", name), "utf8");
@@ -77,5 +78,32 @@ describe("supplier parsers", () => {
 		expect(rows[0].product).toBe("Vàng 9999 (nhẫn tròn)");
 		expect(rows[0].buyRaw).toBe("17.650.000");
 		expect(rows[0].sellRaw).toBe("17.900.000");
+	});
+
+	it("parses GoldPrice world gold USD row", async () => {
+		const supplier = SUPPLIERS.find((item) => item.supplierId === "GOLDPRICE")!;
+		const rows = await parseGoldPrice(
+			fakePage(fixture("goldprice.html")),
+			supplier,
+		);
+
+		expect(rows).toHaveLength(1);
+		expect(rows[0].product).toBe("Gold spot (USD/oz)");
+		expect(rows[0].buyRaw).toBe("5295");
+		expect(rows[0].sellRaw).toBe("5295");
+		expect(rows[0].sourceUpdatedAtRaw).toBe("04:15 NY Time");
+	});
+
+	it("parses GoldPrice USD from HOLDINGS ticker fallback", async () => {
+		const supplier = SUPPLIERS.find((item) => item.supplierId === "GOLDPRICE")!;
+		const rows = await parseGoldPrice(
+			fakePage(fixture("goldprice-holdings.html")),
+			supplier,
+		);
+
+		expect(rows).toHaveLength(1);
+		expect(rows[0].product).toBe("Gold spot (USD/oz)");
+		expect(rows[0].buyRaw).toBe("5299");
+		expect(rows[0].sellRaw).toBe("5299");
 	});
 });

@@ -2,7 +2,8 @@ export type SupplierId =
 	| "24H"
 	| "KIM_KHANH_VIET_HUNG"
 	| "HOA_KIM_NGUYEN"
-	| "NGOC_THINH";
+	| "NGOC_THINH"
+	| "GOLDPRICE";
 
 export interface SupplierTarget {
 	supplierId: SupplierId;
@@ -36,5 +37,11 @@ export const SUPPLIERS: SupplierTarget[] = [
 		sourceUrl:
 			"https://ngocthinh-jewelry.vn/pages/bang-gia-vang?srsltid=AfmBOoq5tMd-2wmZ7g_RKBRlinDJavXPxMxCZG-7OXWP1FTtn5VgNFHo",
 		products: ["Vàng 9999 (nhẫn tròn)"],
+	},
+	{
+		supplierId: "GOLDPRICE",
+		supplierName: "GoldPrice.org",
+		sourceUrl: "https://goldprice.org/",
+		products: ["Gold spot (USD/oz)"],
 	},
 ];

@@ -18,6 +18,7 @@ import { parse24h } from "./parsers/parser24h.js";
 import { parseHoaKimNguyen } from "./parsers/parserHoaKimNguyen.js";
 import { parseKimKhanhVietHung } from "./parsers/parserKimKhanhVietHung.js";
 import { parseNgocThinh } from "./parsers/parserNgocThinh.js";
+import { parseGoldPrice } from "./parsers/parserGoldPrice.js";
 import { log } from "./shared/logger.js";
 import { createRunId, nowIso } from "./shared/time.js";
 
@@ -26,6 +27,7 @@ const parserMap: Record<SupplierId, SupplierParser> = {
 	KIM_KHANH_VIET_HUNG: parseKimKhanhVietHung,
 	HOA_KIM_NGUYEN: parseHoaKimNguyen,
 	NGOC_THINH: parseNgocThinh,
+	GOLDPRICE: parseGoldPrice,
 };
 
 const deriveRunStatus = (succeeded: number, failed: number): RunStatus => {

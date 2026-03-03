@@ -34,6 +34,9 @@ It runs on a schedule (every 2 hours via GitHub Actions), crawls configured supp
 - Ngoc Thinh Jewelry
   - URL: https://ngocthinh-jewelry.vn/pages/bang-gia-vang?srsltid=AfmBOoq5tMd-2wmZ7g_RKBRlinDJavXPxMxCZG-7OXWP1FTtn5VgNFHo
   - Target row: `Vàng 9999 (nhẫn tròn)`
+- GoldPrice.org
+  - URL: https://goldprice.org/
+  - Target row: `Gold spot (USD/oz)` from `Gold Price per Ounce`
 
 ## Quick start
 
@@ -86,14 +89,14 @@ Workflow file: `.github/workflows/crawl.yml`
 
 Triggers:
 
-- Schedule: every 2 hours (`0 */2 * * *`)
+- Schedule: every 2 hours during 08:00-18:00 (UTC+7), cron UTC: `0 1-11/2 * * *`
 - Manual: `workflow_dispatch`
 
 Main steps:
 
 1. Checkout
-2. Setup Node.js 20
-3. Setup pnpm
+2. Setup pnpm
+3. Setup Node.js 20
 4. Install dependencies
 5. Install Playwright Chromium
 6. Run crawler
