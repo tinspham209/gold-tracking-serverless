@@ -24,7 +24,7 @@ describe("domain normalize + metrics", () => {
 		expect(value).toContain("2026-03-03T");
 	});
 
-	it("formats sourceUpdatedAt display as DD/MM/YYYY HH:mm", () => {
+	it("keeps sourceUpdatedAt display as provided", () => {
 		const message = formatRunMessage(
 			{
 				runId: "run-20260303-043555",
@@ -41,17 +41,16 @@ describe("domain normalize + metrics", () => {
 					buy: 186400,
 					sell: 189400,
 					spread: 3000,
-					sourceUpdatedAt: "2026-03-03T04:32:00.000Z",
+					sourceUpdatedAt: "03/03/2026 11:32",
 					crawledAt: "2026-03-03T04:35:55.000Z",
 					sourceUrl: "https://example.com",
 				},
 			],
+			"2026-03-03T04:35:55.000Z",
 		);
 
+		expect(message).toContain("Crawl at:");
+		expect(message).toContain("Gold Price now:");
 		expect(message).toContain("03/03/2026 11:32");
-		expect(message).not.toContain("2026-03-03T04:32:00.000Z");
-		expect(message).toContain("Status: ok");
-		expect(message).toContain("Suppliers: 1/1 succeeded");
-		expect(message).toContain("Data:");
 	});
 });

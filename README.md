@@ -81,7 +81,9 @@ If no notifier is configured, the run still succeeds in **log-only mode**.
 
 - Language: English
 - Number format: grouped VND-style formatting
-- Source updated time display: `DD/MM/YYYY HH:mm` in Vietnam local timezone (`Asia/Ho_Chi_Minh`)
+- Header includes crawl timestamp: `Crawl at: ...` (Vietnam timezone)
+- Main section title: `Gold Price now:`
+- Source updated time display: kept as provided by suppliers (no extra timezone conversion)
 
 ## CI workflow
 

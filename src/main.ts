@@ -4,7 +4,7 @@ import { createBrowser } from "./crawler/browser.js";
 import { runSupplier } from "./crawler/runSupplier.js";
 import { formatRunMessage } from "./domain/format.js";
 import { calculateSpread } from "./domain/metrics.js";
-import { normalizeSourceUpdatedAt, normalizeVnd } from "./domain/normalize.js";
+import { normalizeVnd } from "./domain/normalize.js";
 import { createGoogleChatNotifier } from "./notify/googleChat.js";
 import { createTelegramNotifier } from "./notify/telegram.js";
 import type {
@@ -63,7 +63,7 @@ const buildItems = (
 				buy,
 				sell,
 				spread: calculateSpread(buy, sell),
-				sourceUpdatedAt: normalizeSourceUpdatedAt(row.sourceUpdatedAtRaw),
+				sourceUpdatedAt: row.sourceUpdatedAtRaw,
 				crawledAt,
 				sourceUrl: row.sourceUrl,
 			});
@@ -110,7 +110,7 @@ const main = async (): Promise<RunResult> => {
 			errors,
 		};
 
-		const message = formatRunMessage(summary, items);
+		const message = formatRunMessage(summary, items, crawledAt);
 		const payload = { summary, items, message };
 
 		const notifiers = [

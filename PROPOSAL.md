@@ -119,7 +119,8 @@ gold-tracking/
 
 Send plain text payload first (high compatibility):
 
-- run timestamp + status summary
+- crawl timestamp header (`Crawl at: ...`)
+- section title: `Gold Price now:`
 - per-item lines: `supplier | product | buy | sell | spread | sourceUpdatedAt`
 - failure section when status is `partial` or `failed`
 
@@ -210,7 +211,7 @@ If not explicitly changed during implementation:
 - send to both channels when both are configured
 - message language: English
 - value display: full VND formatting (e.g., `17,700,000`)
-- source updated time display: `DD/MM/YYYY HH:mm` (Vietnam local timezone)
+- source updated time display: keep supplier-provided string (no extra timezone conversion)
 - failed suppliers retried in same run with bounded attempts, then defer to next schedule
 - Node runtime: Node.js 20 with pnpm scripts (`crawl`, `typecheck`, `test`)
 - unit test runner: Vitest with local HTML fixtures (no live website assertions in CI)
