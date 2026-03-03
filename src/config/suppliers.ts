@@ -14,8 +14,14 @@ export interface SupplierTarget {
 
 export const SUPPLIERS: SupplierTarget[] = [
 	{
+		supplierId: "GOLDPRICE",
+		supplierName: "GoldPrice",
+		sourceUrl: "https://goldprice.org/",
+		products: ["Gold spot (USD/oz)"],
+	},
+	{
 		supplierId: "24H",
-		supplierName: "24h",
+		supplierName: "GoldVN 24H",
 		sourceUrl: "https://www.24h.com.vn/gia-vang-hom-nay-c425.html",
 		products: ["SJC", "PNJ Hà Nội"],
 	},
@@ -37,11 +43,5 @@ export const SUPPLIERS: SupplierTarget[] = [
 		sourceUrl:
 			"https://ngocthinh-jewelry.vn/pages/bang-gia-vang?srsltid=AfmBOoq5tMd-2wmZ7g_RKBRlinDJavXPxMxCZG-7OXWP1FTtn5VgNFHo",
 		products: ["Vàng 9999 (nhẫn tròn)"],
-	},
-	{
-		supplierId: "GOLDPRICE",
-		supplierName: "GoldPrice.org",
-		sourceUrl: "https://goldprice.org/",
-		products: ["Gold spot (USD/oz)"],
 	},
 ];
