@@ -21,6 +21,20 @@ It runs on a schedule (every 2 hours via GitHub Actions), crawls configured supp
 - Vitest
 - pnpm
 
+## Suppliers Supported
+- 24h
+  - URL: https://www.24h.com.vn/gia-vang-hom-nay-c425.html
+  - Target rows: `SJC`, `PNJ Hà Nội`
+- Kim Khanh Viet Hung
+  - URL: https://kimkhanhviethung.vn/tra-cuu-gia-vang.html
+  - Target row: `Vàng 999.9`
+- Hoa Kim Nguyen
+  - URL: https://hoakimnguyen.com/tra-cuu-gia-vang/
+  - Target row: `9999 vĩ`
+- Ngoc Thinh Jewelry
+  - URL: https://ngocthinh-jewelry.vn/pages/bang-gia-vang?srsltid=AfmBOoq5tMd-2wmZ7g_RKBRlinDJavXPxMxCZG-7OXWP1FTtn5VgNFHo
+  - Target row: `Vàng 9999 (nhẫn tròn)`
+
 ## Quick start
 
 ### 1) Install dependencies
