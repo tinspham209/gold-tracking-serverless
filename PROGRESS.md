@@ -22,9 +22,9 @@ _Last updated: 2026-03-03_
 
 ## Detailed checklist
 
-### Current task — Update schedule to every 2 hours (completed)
+### Current task — Update schedule to every 3 hours (completed)
 
-- [x] Update workflow cron expression to run every 2 hours
+- [x] Update workflow cron expression to run every 3 hours (08:00, 11:00, 14:00, 17:00 UTC+7)
 - [x] Update proposal and project docs to match new schedule
 - [x] Keep manual `workflow_dispatch` trigger unchanged
 
@@ -80,7 +80,7 @@ _Last updated: 2026-03-03_
 ### Completed task — GitHub Actions workflow
 
 - [x] Add `.github/workflows/crawl.yml`
-- [x] Configure `schedule` trigger every 2 hours
+- [x] Configure `schedule` trigger every 3 hours (08:00, 11:00, 14:00, 17:00 UTC+7)
 - [x] Configure `workflow_dispatch` trigger
 - [x] Add Node 20 + pnpm install + Playwright browser install + crawl run steps
 
@@ -167,7 +167,7 @@ _Last updated: 2026-03-03_
 - Translated `formatRunMessage` output labels and sections to English.
 - Applied focused hardening patch: safe page cleanup, notifier channel isolation, and Vietnam-local datetime display.
 - Added `README.md`, `ARCHITECTURE.md`, and `DEVELOPMENT.md` with setup, architecture, and workflow guidance.
-- Updated GitHub Actions schedule from every 30 minutes to every 2 hours.
+- Updated GitHub Actions schedule from every 30 minutes to every 3 hours at 08:00, 11:00, 14:00, 17:00 (UTC+7).
 
 ## Next suggested action
 

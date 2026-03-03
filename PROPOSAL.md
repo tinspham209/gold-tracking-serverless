@@ -4,13 +4,13 @@ _Last updated: 2026-03-03_
 
 ## 1) Objective
 
-Build a **serverless, stateless** crawler that runs every 2 hours, extracts gold prices from selected Vietnamese suppliers using Playwright, computes in-memory metrics, and sends webhook alerts to **Google Chat** and/or **Telegram**.
+Build a **serverless, stateless** crawler that runs every 3 hours at 08:00, 11:00, 14:00, 17:00 (UTC+7), extracts gold prices from selected Vietnamese suppliers using Playwright, computes in-memory metrics, and sends webhook alerts to **Google Chat** and/or **Telegram**.
 
 ## 2) Scope and non-scope
 
 ### In scope
 
-- GitHub Actions scheduler (`0 */2 * * *`)
+- GitHub Actions scheduler (`0 1,4,7,10 * * *` UTC; 08:00, 11:00, 14:00, 17:00 UTC+7)
 - Node.js + TypeScript + Playwright crawler CLI
 - Per-supplier parser modules
 - In-memory normalization + metrics (`spread`)
@@ -159,7 +159,7 @@ Message semantics should stay aligned with Google Chat output.
 
 Triggers:
 
-- `schedule: "0 */2 * * *"`
+- `schedule: "0 1,4,7,10 * * *"`
 - `workflow_dispatch`
 
 Core job steps:
@@ -198,7 +198,7 @@ Optional: upload log artifact when run fails.
 
 ## 13) Acceptance criteria
 
-- workflow runs every 2 hours
+- workflow runs every 3 hours at 08:00, 11:00, 14:00, 17:00 (UTC+7)
 - at least one successful supplier parse sends notification
 - notification includes buy/sell/spread/source updated time
 - partial failures still produce useful output

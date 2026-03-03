@@ -102,6 +102,6 @@ Run a scheduled, serverless crawler that extracts selected gold prices from conf
 
 ## CI deployment model
 
-- Scheduled run via GitHub Actions every 2 hours
+- Scheduled run via GitHub Actions every 3 hours at 08:00, 11:00, 14:00, 17:00 (UTC+7)
 - Manual dispatch supported
 - No long-running services, no DB, no backend API

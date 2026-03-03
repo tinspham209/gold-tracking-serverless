@@ -2,7 +2,7 @@
 
 Serverless, stateless crawler for Vietnamese gold price monitoring.
 
-It runs on a schedule (every 2 hours via GitHub Actions), crawls configured suppliers with Playwright, normalizes in-memory data, computes spread metrics, and sends notifications to Google Chat and/or Telegram.
+It runs on a schedule (every 3 hours at 08:00, 11:00, 14:00, 17:00 UTC+7 via GitHub Actions), crawls configured suppliers with Playwright, normalizes in-memory data, computes spread metrics, and sends notifications to Google Chat and/or Telegram.
 
 ## Features
 
@@ -91,7 +91,7 @@ Workflow file: `.github/workflows/crawl.yml`
 
 Triggers:
 
-- Schedule: every 2 hours during 08:00-18:00 (UTC+7), cron UTC: `0 1-11/2 * * *`
+- Schedule: every 3 hours at 08:00, 11:00, 14:00, 17:00 (UTC+7), cron UTC: `0 1,4,7,10 * * *`
 - Manual: `workflow_dispatch`
 
 Main steps:
