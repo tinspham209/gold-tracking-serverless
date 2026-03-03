@@ -22,10 +22,13 @@ It runs on a schedule (every 3 hours at 08:00, 11:00, 14:00, 17:00 UTC+7 via Git
 - pnpm
 
 ## Suppliers Supported
-- 24h
+- GoldPrice
+  - URL: https://goldprice.org/
+  - Target row: `Gold spot (USD/oz)` from `Gold Price per Ounce`
+- GoldVN 24H
   - URL: https://www.24h.com.vn/gia-vang-hom-nay-c425.html
   - Target rows: `SJC`, `PNJ Hà Nội`
-- Kim Khanh Viet Hung
+- KKVH
   - URL: https://kimkhanhviethung.vn/tra-cuu-gia-vang.html
   - Target row: `Vàng 999.9`
 - Hoa Kim Nguyen
@@ -34,9 +37,6 @@ It runs on a schedule (every 3 hours at 08:00, 11:00, 14:00, 17:00 UTC+7 via Git
 - Ngoc Thinh Jewelry
   - URL: https://ngocthinh-jewelry.vn/pages/bang-gia-vang?srsltid=AfmBOoq5tMd-2wmZ7g_RKBRlinDJavXPxMxCZG-7OXWP1FTtn5VgNFHo
   - Target row: `Vàng 9999 (nhẫn tròn)`
-- GoldPrice.org
-  - URL: https://goldprice.org/
-  - Target row: `Gold spot (USD/oz)` from `Gold Price per Ounce`
   
 
 ## Output format example
@@ -46,12 +46,12 @@ Crawl at: 3/3/2026, 9:44:04 PM
 Gold Price now:
 | Source             | Target                |        Buy |       Sell |  Spread | Updated At                        |
 | ------------------ | --------------------- | ---------: | ---------: | ------: | --------------------------------- |
-| 24h                | SJC                   |    185.200 |    188.200 |   3.000 | 21:40 03/03/2026                  |
-| 24h                | PNJ Hà Nội            |    185.100 |    188.100 |   3.000 | 21:40 03/03/2026                  |
+| GoldPrice          | Gold spot (USD/oz)    |      5.109 |      5.109 |       0 | Mar 3rd 2026, 09:43:35 am NY time |
+| GoldVN 24H         | SJC                   |    185.200 |    188.200 |   3.000 | 21:40 03/03/2026                  |
+| GoldVN 24H         | PNJ Hà Nội            |    185.100 |    188.100 |   3.000 | 21:40 03/03/2026                  |
 | KKVH               | Vàng 999.9            | 17.480.000 | 17.760.000 | 280.000 | 20:18:57 03/03/2026               |
 | Hoa Kim Nguyên     | 9999 vĩ               |     17.500 |     17.860 |     360 | 16:49:51 03/03/2026               |
 | Ngọc Thịnh Jewelry | Vàng 9999 (nhẫn tròn) | 17.300.000 | 17.600.000 | 300.000 | 13:53 03/03/2026                  |
-| GoldPrice.org      | Gold spot (USD/oz)    |      5.109 |      5.109 |       0 | Mar 3rd 2026, 09:43:35 am NY time |
 
 ## Quick start
 

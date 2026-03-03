@@ -42,6 +42,7 @@ Run a scheduled, serverless crawler that extracts selected gold prices from conf
 ### Parsers
 
 - `src/parsers/parser24h.ts`
+- `src/parsers/parserGoldPrice.ts`
 - `src/parsers/parserKimKhanhVietHung.ts`
 - `src/parsers/parserHoaKimNguyen.ts`
 - `src/parsers/parserNgocThinh.ts`

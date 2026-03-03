@@ -13,14 +13,15 @@ Maintain reliable scheduled execution for the crawler in GitHub Actions.
 ## Workflow baseline
 
 - Triggers:
-  - `schedule: "*/30 * * * *"`
+  - `schedule: "0 1,4,7,10 * * *"` (UTC; 08:00, 11:00, 14:00, 17:00 UTC+7)
   - `workflow_dispatch`
 - Steps:
   1. checkout
-  2. setup node
-  3. install dependencies
-  4. install Playwright browser deps
-  5. run crawler CLI
+  2. setup pnpm
+  3. setup node
+  4. install dependencies
+  5. install Playwright browser deps
+  6. run crawler CLI
 
 ## Reliability checklist
 

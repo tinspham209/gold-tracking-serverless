@@ -14,11 +14,11 @@ _Last updated: 2026-03-03_
 | -------------------------------------------- | ------ | ------------------------------------------------------- |
 | Proposal aligned to serverless/no-DB scope   | ✅ Done | `PROPOSAL.md` updated                                   |
 | Project scaffolding (`src`, tests, workflow) | ✅ Done | Base files, source tree, tests, and workflow completed  |
-| Supplier parser modules (4 sources)          | ✅ Done | 24h, KKVH, HKN, Ngọc Thịnh implemented                  |
+| Supplier parser modules (5 sources)          | ✅ Done | GoldPrice, 24h, KKVH, HKN, Ngọc Thịnh implemented       |
 | Notification adapters (Chat + Telegram)      | ✅ Done | Google Chat + Telegram senders implemented              |
 | CI schedule + manual dispatch                | ✅ Done | `.github/workflows/crawl.yml` added                     |
 | Fixture-based tests                          | ✅ Done | Parser/domain/notify tests added and passing            |
-| Dry-run verification                         | ✅ Done | Local run succeeded in log-only mode with 4/4 suppliers |
+| Dry-run verification                         | ✅ Done | Local run succeeded in log-only mode with 5/5 suppliers |
 
 ## Detailed checklist
 
@@ -51,8 +51,8 @@ _Last updated: 2026-03-03_
 
 ### Current task — Format output datetime display (completed)
 
-- [x] Convert displayed `sourceUpdatedAt` from ISO to `DD/MM/YYYY HH:mm`
-- [x] Keep internal normalized timestamp logic unchanged
+- [x] Keep displayed `sourceUpdatedAt` as supplier-provided string
+- [x] Remove extra timezone conversion in formatter
 - [x] Add/adjust tests for formatter output
 - [x] Update `PROPOSAL.md` for display format decision
 
@@ -86,7 +86,7 @@ _Last updated: 2026-03-03_
 
 ### Completed task — Fixture-based tests
 
-- [x] Add parser fixture HTML samples for 4 suppliers
+- [x] Add parser fixture HTML samples for 5 suppliers
 - [x] Add parser unit tests for target product rows
 - [x] Add deterministic domain tests (`normalize`, `spread`)
 - [x] Add notifier payload mapping tests
@@ -94,7 +94,7 @@ _Last updated: 2026-03-03_
 ### Completed task — Parser + orchestration baseline
 
 - [x] Add Playwright browser lifecycle helpers
-- [x] Implement supplier parser modules for 4 configured sources
+- [x] Implement supplier parser modules for 5 configured sources
 - [x] Implement supplier run isolation with bounded retry
 - [x] Implement Google Chat + Telegram notifier senders
 - [x] Implement main orchestration flow (`ok | partial | failed`)
@@ -163,9 +163,9 @@ _Last updated: 2026-03-03_
 - Completed full local verification (`typecheck`, `test`, dry-run crawl with log-only notify path).
 - Migrated project/package/workflow defaults from npm to pnpm and re-verified local runs.
 - Fixed local `.env` loading via `dotenv`, and removed sensitive env debug logging.
-- Updated notification datetime display to `DD/MM/YYYY HH:mm` and verified test coverage.
+- Updated notification datetime display to keep supplier-provided `sourceUpdatedAt` text.
 - Translated `formatRunMessage` output labels and sections to English.
-- Applied focused hardening patch: safe page cleanup, notifier channel isolation, and Vietnam-local datetime display.
+- Applied focused hardening patch: safe page cleanup, notifier channel isolation, and crawl-header Vietnam-local datetime display.
 - Added `README.md`, `ARCHITECTURE.md`, and `DEVELOPMENT.md` with setup, architecture, and workflow guidance.
 - Updated GitHub Actions schedule from every 30 minutes to every 3 hours at 08:00, 11:00, 14:00, 17:00 (UTC+7).
 

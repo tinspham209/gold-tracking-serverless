@@ -4,7 +4,7 @@
 
 Build and maintain a **serverless, stateless** crawler that:
 
-1. runs every 30 minutes via GitHub Actions,
+1. runs every 3 hours at 08:00, 11:00, 14:00, 17:00 (UTC+7) via GitHub Actions,
 2. crawls configured gold suppliers with Playwright,
 3. parses selected product rows and source update times,
 4. computes in-memory metrics (e.g., spread),

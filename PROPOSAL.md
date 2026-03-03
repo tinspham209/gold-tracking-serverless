@@ -25,6 +25,8 @@ Build a **serverless, stateless** crawler that runs every 3 hours at 08:00, 11:0
 
 ## 3) Confirmed source targets
 
+- `https://goldprice.org/`
+  - Target row: `Gold spot (USD/oz)`
 - `https://www.24h.com.vn/gia-vang-hom-nay-c425.html`
   - Target rows: `SJC`, `PNJ Hà Nội`
 - `https://kimkhanhviethung.vn/tra-cuu-gia-vang.html`
@@ -41,7 +43,7 @@ GitHub Actions runs one CLI process:
 1. load supplier config
 2. crawl each supplier with Playwright
 3. parse buy/sell + source updated time
-4. normalize numeric/time values
+4. normalize numeric values and keep source updated text as provided by supplier
 5. compute metrics (`spread = sell - buy`)
 6. create run summary (`ok | partial | failed`)
 7. send notification payload to enabled channels
@@ -65,6 +67,7 @@ gold-tracking/
     parsers/
       types.ts
       parser24h.ts
+      parserGoldPrice.ts
       parserKimKhanhVietHung.ts
       parserHoaKimNguyen.ts
       parserNgocThinh.ts
@@ -100,7 +103,7 @@ gold-tracking/
 - `buy` (number, VND)
 - `sell` (number, VND)
 - `spread` (`sell - buy`)
-- `sourceUpdatedAt` (ISO when parseable)
+- `sourceUpdatedAt` (supplier-provided string, optional)
 - `crawledAt`
 - `sourceUrl`
 
@@ -165,10 +168,11 @@ Triggers:
 Core job steps:
 
 1. checkout
-2. setup Node.js
-3. install dependencies
-4. install Playwright browser deps
-5. run crawler CLI
+2. setup pnpm
+3. setup Node.js
+4. install dependencies
+5. install Playwright browser deps
+6. run crawler CLI
 
 Optional: upload log artifact when run fails.
 
@@ -184,7 +188,7 @@ Optional: upload log artifact when run fails.
 ### Phase 1 — MVP
 
 - scaffold project
-- implement 4 parser modules
+- implement 5 parser modules
 - implement orchestrator + canonical payload
 - implement Google Chat + Telegram adapters
 - add scheduled workflow

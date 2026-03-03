@@ -22,7 +22,7 @@ Implement or extend the stateless gold crawler flow for this repository.
 1. Add/modify supplier config entry in `src/config/suppliers.ts`.
 2. Create/adjust parser in `src/parsers/`.
 3. Ensure parser returns canonical data shape from `src/parsers/types.ts`.
-4. Normalize number/time formats via `src/domain/normalize.ts`.
+4. Normalize number formats via `src/domain/normalize.ts`; keep `sourceUpdatedAt` as supplier-provided text.
 5. Compute derived metrics in `src/domain/metrics.ts`.
 6. Keep failure isolation at supplier level in orchestration.
 7. Add fixture-based parser tests under `test/parsers/`.
