@@ -15,14 +15,7 @@ const formatSourceUpdatedAt = (value: string | undefined): string => {
 const formatItemLine = (item: GoldItem): string => {
 	const updated = formatSourceUpdatedAt(item.sourceUpdatedAt);
 
-	return [
-		item.supplier,
-		item.product,
-		formatVnd(item.buy),
-		formatVnd(item.sell),
-		formatVnd(item.spread),
-		updated,
-	].join(" | ");
+	return `| ${item.supplier} | ${item.product} | ${formatVnd(item.buy)} | ${formatVnd(item.sell)} | ${formatVnd(item.spread)} | ${updated} |`;
 };
 
 export const formatRunMessage = (
@@ -39,7 +32,9 @@ export const formatRunMessage = (
 		// `Suppliers: ${summary.suppliersSucceeded}/${summary.suppliersConfigured} succeeded`,
 	];
 
-	const body = items.length
+	const hasItems = items.length > 0;
+
+	const body = hasItems
 		? items.map(formatItemLine)
 		: ["No valid gold price data in this run."];
 
@@ -56,8 +51,13 @@ export const formatRunMessage = (
 		...header,
 		"",
 		"Gold Price now:",
-		"| Source | Target | Buy | Sell | Spread | Updated At",
-		...body,
+		...(hasItems
+			? [
+					"| Source | Target | Buy | Sell | Spread | Updated At |",
+					"|---|---|---:|---:|---:|---|",
+					...body,
+				]
+			: body),
 		...(errorSection.length ? ["", ...errorSection] : []),
 	].join("\n");
 };
