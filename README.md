@@ -4,6 +4,8 @@ Serverless, stateless crawler for Vietnamese gold price monitoring.
 
 It runs on a schedule (every 3 hours at 08:00, 11:00, 14:00, 17:00 UTC+7 via GitHub Actions), crawls configured suppliers with Playwright, normalizes in-memory data, computes spread metrics, and sends notifications to Google Chat and/or Telegram.
 
+![Thumbnail Hero](./assets/thumbnail/thumbnail.jpg)
+
 ## Features
 
 - Serverless and stateless runtime
