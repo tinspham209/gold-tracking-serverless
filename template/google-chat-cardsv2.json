@@ -1,0 +1,74 @@
+{
+	"cardsV2": [
+		{
+			"cardId": "gold-price-card",
+			"card": {
+				"header": {
+					"title": "Gold Price Now",
+					"subtitle": "Crawled 19/03/2026 at 08:40:15",
+					"imageUrl": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/payments/default/48px.svg",
+					"imageType": "CIRCLE"
+				},
+				"sections": [
+					{
+						"header": "🌐 International",
+						"widgets": [
+							{
+								"decoratedText": {
+									"topLabel": "GoldPrice · Gold spot (USD/oz)",
+									"text": "<font color=\"#6ecda3\">Buy 3,084</font>  <font color=\"#e8a07a\">Sell 3,084</font>",
+									"bottomLabel": "Spread: 0 · Updated: Mar 18th 09:40 pm NY"
+								}
+							}
+						]
+					},
+					{
+						"header": "🇻🇳 Domestic — Lượng (triệu VND)",
+						"widgets": [
+							{
+								"decoratedText": {
+									"topLabel": "GoldVN 24H · SJC",
+									"text": "<font color=\"#6ecda3\">Buy 175.4</font>  <font color=\"#e8a07a\">Sell 178.4</font>",
+									"bottomLabel": "Spread: 3.0 · 08:36"
+								}
+							},
+							{
+								"decoratedText": {
+									"topLabel": "GoldVN 24H · PNJ Hà Nội",
+									"text": "<font color=\"#6ecda3\">Buy 175.2</font>  <font color=\"#e8a07a\">Sell 178.2</font>",
+									"bottomLabel": "Spread: 3.0 · 08:36"
+								}
+							}
+						]
+					},
+					{
+						"header": "🇻🇳 Domestic — Chỉ (VND)",
+						"widgets": [
+							{
+								"decoratedText": {
+									"topLabel": "KKVH · Vàng 999.9",
+									"text": "<font color=\"#6ecda3\">Buy 16.67M</font>  <font color=\"#e8a07a\">Sell 16.92M</font>",
+									"bottomLabel": "Spread: 250K · 08:37"
+								}
+							},
+							{
+								"decoratedText": {
+									"topLabel": "Hoa Kim Nguyên · 9999 vĩ",
+									"text": "<font color=\"#6ecda3\">Buy 16.58M</font>  <font color=\"#e8a07a\">Sell 16.90M</font>",
+									"bottomLabel": "Spread: 320K · 07:53"
+								}
+							},
+							{
+								"decoratedText": {
+									"topLabel": "Ngọc Thịnh Jewelry · Vàng 9999 nhẫn tròn",
+									"text": "<font color=\"#6ecda3\">Buy 16.45M</font>  <font color=\"#e8a07a\">Sell 16.65M</font>",
+									"bottomLabel": "Spread: 200K · 08:27"
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}
