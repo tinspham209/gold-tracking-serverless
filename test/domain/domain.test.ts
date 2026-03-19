@@ -49,12 +49,10 @@ describe("domain normalize + metrics", () => {
 			"2026-03-03T04:35:55.000Z",
 		);
 
-		expect(message).toContain("Crawl at:");
-		expect(message).toContain("Gold Price now:");
-		expect(message).toContain(
-			"| Source | Target | Buy | Sell | Spread | Updated At |",
-		);
-		expect(message).toContain("|---|---|---:|---:|---:|---|");
-		expect(message).toContain("03/03/2026 11:32");
+		expect(message).toContain("🟡 GOLD TRACKER · 11:35:55 03/03/2026");
+		expect(message).toContain("🌐 International");
+		expect(message).toContain("🇻🇳 Domestic");
+		expect(message).toContain("📌 24h · SJC · 03/03/2026 11:32");
+		expect(message).toContain("Mua: 186.400 | Bán: 189.400 | ±3");
 	});
 });

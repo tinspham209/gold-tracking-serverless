@@ -3,72 +3,40 @@ import type { Notifier } from "./types.js";
 import { retry } from "../shared/retry.js";
 
 import type { GoldItem, RunSummary } from "../parsers/types.js";
+import {
+	categorizeItem,
+	formatPriceValue,
+	formatSpreadValue,
+	getSourceUpdatedLabel,
+} from "../domain/presentation.js";
+import { formatCrawledAt } from "../domain/format.js";
 
 const shouldRetryHttp = (status: number): boolean => {
 	return status === 429 || status >= 500;
 };
 
-const GOLD_ICON_URL =
-	"https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/payments/default/48px.svg";
+const formatDecoratedText = (item: GoldItem) => {
+	const category = categorizeItem(item);
+	const buy = formatPriceValue(item.buy, category);
+	const sell = formatPriceValue(item.sell, category);
+	const spread = formatSpreadValue(item.spread, category);
 
-const formatCrawledAt = (iso: string): string => {
-	return new Date(iso).toLocaleString("vi-VN", {
-		timeZone: "Asia/Ho_Chi_Minh",
-		hour12: false,
-		year: "numeric",
-		month: "2-digit",
-		day: "2-digit",
-		hour: "2-digit",
-		minute: "2-digit",
-		second: "2-digit",
-	});
-};
-
-const classifyItem = (
-	item: GoldItem,
-): "international" | "domestic-luong" | "domestic-chi" => {
-	const supplier = item.supplier.toLowerCase();
-	const sourceUrl = item.sourceUrl.toLowerCase();
-
-	if (supplier.includes("goldprice") || sourceUrl.includes("goldprice.org")) {
-		return "international";
-	}
-
-	if (supplier.includes("24h")) {
-		return "domestic-luong";
-	}
-
-	return "domestic-chi";
-};
-
-const formatDomesticNumber = (value: number): string => {
-	const formatted = new Intl.NumberFormat("vi-VN").format(value);
-	return formatted.endsWith(".000") ? formatted.slice(0, -4) : formatted;
-};
-
-const formatDecoratedText = (
-	item: GoldItem,
-	category: "international" | "domestic-luong" | "domestic-chi",
-): { text: string; spread: string } => {
 	if (category === "international") {
 		return {
-			text: `<font color="#6ecda3">Buy ${item.buy}</font>  <font color="#e8a07a">Sell ${item.sell}</font>`,
-			spread: `${item.spread}`,
+			text: `<font color="#6ecda3">Buy ${buy}</font>  <font color="#e8a07a">Sell ${sell}</font>`,
+			spread: spread,
 		};
 	}
 
 	return {
-		text: `<font color="#6ecda3">Buy ${formatDomesticNumber(item.buy)}</font>  <font color="#e8a07a">Sell ${formatDomesticNumber(item.sell)}</font>`,
-		spread: formatDomesticNumber(item.spread),
+		text: `<font color="#6ecda3">Buy ${buy}</font>  <font color="#e8a07a">Sell ${sell}</font>`,
+		spread: spread,
 	};
 };
 
-const mapItemToWidget = (
-	item: GoldItem,
-	category: "international" | "domestic-luong" | "domestic-chi",
-) => {
-	const { text, spread } = formatDecoratedText(item, category);
-	const updated = item.sourceUpdatedAt?.trim() || "unknown";
+const mapItemToWidget = (item: GoldItem) => {
+	const { text, spread } = formatDecoratedText(item);
+	const updated = getSourceUpdatedLabel(item.sourceUpdatedAt);
 
 	return {
 		decoratedText: {
@@ -81,13 +49,13 @@ const mapItemToWidget = (
 
 const buildCardsPayload = (summary: RunSummary, items: GoldItem[]) => {
 	const international = items.filter(
-		(item) => classifyItem(item) === "international",
+		(item) => categorizeItem(item) === "international",
 	);
 	const domesticLuong = items.filter(
-		(item) => classifyItem(item) === "domestic-luong",
+		(item) => categorizeItem(item) === "domestic-luong",
 	);
 	const domesticChi = items.filter(
-		(item) => classifyItem(item) === "domestic-chi",
+		(item) => categorizeItem(item) === "domestic-chi",
 	);
 
 	const sections: Array<{
@@ -98,25 +66,21 @@ const buildCardsPayload = (summary: RunSummary, items: GoldItem[]) => {
 	if (international.length > 0) {
 		sections.push({
 			header: "🌐 International",
-			widgets: international.map((item) =>
-				mapItemToWidget(item, "international"),
-			),
+			widgets: international.map((item) => mapItemToWidget(item)),
 		});
 	}
 
 	if (domesticLuong.length > 0) {
 		sections.push({
 			header: "🇻🇳 Domestic — Lượng",
-			widgets: domesticLuong.map((item) =>
-				mapItemToWidget(item, "domestic-luong"),
-			),
+			widgets: domesticLuong.map((item) => mapItemToWidget(item)),
 		});
 	}
 
 	if (domesticChi.length > 0) {
 		sections.push({
 			header: "🇻🇳 Domestic — Chỉ",
-			widgets: domesticChi.map((item) => mapItemToWidget(item, "domestic-chi")),
+			widgets: domesticChi.map((item) => mapItemToWidget(item)),
 		});
 	}
 

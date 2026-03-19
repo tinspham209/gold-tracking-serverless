@@ -2,10 +2,6 @@ import type { EnvConfig } from "../config/env.js";
 import type { Notifier } from "./types.js";
 import { retry } from "../shared/retry.js";
 
-const escapeTelegramMarkdown = (value: string): string => {
-	return value.replace(/([_\*\[\]\(\)~`>#+\-=|{}.!])/g, "\\$1");
-};
-
 const shouldRetryHttp = (status: number): boolean => {
 	return status === 429 || status >= 500;
 };
@@ -31,8 +27,7 @@ export const createTelegramNotifier = (
 						},
 						body: JSON.stringify({
 							chat_id: env.telegramChatId,
-							text: escapeTelegramMarkdown(payload.message),
-							parse_mode: "MarkdownV2",
+							text: payload.message,
 						}),
 					});
 

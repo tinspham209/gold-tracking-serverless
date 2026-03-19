@@ -49,7 +49,7 @@ describe("notifier payload mapping", () => {
 		expect(body.cardsV2[0].card.header.title).toBe("Gold Price Now");
 	});
 
-	it("maps message to telegram sendMessage payload with escaping", async () => {
+	it("maps message to telegram sendMessage payload as plain text", async () => {
 		const fetchMock = vi
 			.spyOn(globalThis, "fetch")
 			.mockResolvedValue(new Response("ok", { status: 200 }));
@@ -68,8 +68,8 @@ describe("notifier payload mapping", () => {
 
 		expect(fetchMock).toHaveBeenCalledTimes(1);
 		const [, init] = fetchMock.mock.calls[0]!;
-		expect(init?.body).toContain('"parse_mode":"MarkdownV2"');
-		expect(init?.body).toContain("A\\\\_b test \\\\(gold\\\\)\\\\!");
+		expect(init?.body).not.toContain('"parse_mode":"MarkdownV2"');
+		expect(init?.body).toContain("A_b test (gold)!");
 	});
 });
 

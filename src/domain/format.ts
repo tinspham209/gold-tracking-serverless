@@ -1,21 +1,46 @@
 import type { GoldItem, RunSummary } from "../parsers/types.js";
+import {
+	categorizeItem,
+	formatPriceValue,
+	formatSpreadValue,
+	getSourceUpdatedLabel,
+} from "./presentation.js";
 
-const formatVnd = (value: number): string => {
-	return new Intl.NumberFormat("vi-VN").format(value);
+export const formatCrawledAt = (iso: string): string => {
+	return new Date(iso).toLocaleString("vi-VN", {
+		timeZone: "Asia/Ho_Chi_Minh",
+		hour12: false,
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+		hour: "2-digit",
+		minute: "2-digit",
+		second: "2-digit",
+	});
 };
+const formatHeaderTimestamp = (crawledAt: string): string => {
+	const raw = crawledAt.trim();
+	const isoLike = raw.match(/^\d{4}-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
 
-const formatSourceUpdatedAt = (value: string | undefined): string => {
-	if (!value) {
-		return "unknown";
+	if (!isoLike) {
+		return raw;
 	}
 
-	return value.trim();
+	const [, month, day, hour, minute] = isoLike;
+	return `${day}/${month} · ${hour}:${minute}`;
 };
 
-const formatItemLine = (item: GoldItem): string => {
-	const updated = formatSourceUpdatedAt(item.sourceUpdatedAt);
+const formatItemLine = (item: GoldItem): string[] => {
+	const category = categorizeItem(item);
+	const updated = getSourceUpdatedLabel(item.sourceUpdatedAt);
+	const buy = formatPriceValue(item.buy, category);
+	const sell = formatPriceValue(item.sell, category);
+	const spread = formatSpreadValue(item.spread, category);
 
-	return `| ${item.supplier} | ${item.product} | ${formatVnd(item.buy)} | ${formatVnd(item.sell)} | ${formatVnd(item.spread)} | ${updated} |`;
+	return [
+		`${item.supplier} · ${item.product} · ${updated}`,
+		`Mua: ${buy} | Bán: ${sell} | ±${spread}`,
+	];
 };
 
 export const formatRunMessage = (
@@ -24,23 +49,38 @@ export const formatRunMessage = (
 	crawledAt: string,
 ): string => {
 	const header = [
-		`Crawl at: ${new Date(crawledAt).toLocaleString("en-US", {
-			timeZone: "Asia/Ho_Chi_Minh",
-		})}`,
-		// `RunId: ${summary.runId}`,
-		// `Status: ${summary.status}`,
-		// `Suppliers: ${summary.suppliersSucceeded}/${summary.suppliersConfigured} succeeded`,
+		`🟡 GOLD TRACKER · ${formatHeaderTimestamp(formatCrawledAt(crawledAt))}`,
 	];
 
-	const hasItems = items.length > 0;
+	const internationalItems = items.filter(
+		(item) => categorizeItem(item) === "international",
+	);
+	const domesticItems = items.filter(
+		(item) => categorizeItem(item) !== "international",
+	);
 
-	const body = hasItems
-		? items.map(formatItemLine)
-		: ["No valid gold price data in this run."];
+	const sectionSeparator = "━━━━━━━━━━━━━━━━";
+
+	const internationalSection = internationalItems.length
+		? [
+				"🌐 International",
+				...internationalItems.flatMap((item) => formatItemLine(item)),
+			]
+		: ["🌐 International", "No international data."];
+
+	const domesticSection = domesticItems.length
+		? [
+				"🇻🇳 Domestic",
+				...domesticItems.flatMap((item) => {
+					const [title, detail] = formatItemLine(item);
+					return [`📌 ${title}`, detail];
+				}),
+			]
+		: ["🇻🇳 Domestic", "No domestic data."];
 
 	const errorSection = summary.errors.length
 		? [
-				"Errors:",
+				"⚠️ Errors:",
 				...summary.errors.map(
 					(err) => `- ${err.supplier} [${err.errorCode}] ${err.message}`,
 				),
@@ -49,15 +89,10 @@ export const formatRunMessage = (
 
 	return [
 		...header,
-		"",
-		"Gold Price now:",
-		...(hasItems
-			? [
-					"| Source | Target | Buy | Sell | Spread | Updated At |",
-					"|---|---|---:|---:|---:|---|",
-					...body,
-				]
-			: body),
-		...(errorSection.length ? ["", ...errorSection] : []),
+		sectionSeparator,
+		...internationalSection,
+		sectionSeparator,
+		...domesticSection,
+		...(errorSection.length ? [sectionSeparator, ...errorSection] : []),
 	].join("\n");
 };
