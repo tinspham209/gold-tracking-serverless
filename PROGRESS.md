@@ -1,6 +1,6 @@
 # Vietnamese Gold Tracking Alerts — Progress Tracker
 
-_Last updated: 2026-03-03_
+_Last updated: 2026-03-19_
 
 ## Overall status
 
@@ -19,6 +19,8 @@ _Last updated: 2026-03-03_
 | CI schedule + manual dispatch                | ✅ Done | `.github/workflows/crawl.yml` added                     |
 | Fixture-based tests                          | ✅ Done | Parser/domain/notify tests added and passing            |
 | Dry-run verification                         | ✅ Done | Local run succeeded in log-only mode with 5/5 suppliers |
+| Presentation helpers and item categorization | ✅ Done | International/domestic-luong/domestic-chi classification added |
+| Google Chat cardsV2 format                   | ✅ Done | Enhanced Google Chat notifier with formatted cards       |
 
 ## Detailed checklist
 
@@ -172,3 +174,20 @@ _Last updated: 2026-03-03_
 ## Next suggested action
 
 Start Phase 2 hardening (fallback selectors + richer error taxonomy + expanded edge-case fixtures).
+
+### Current task — Item categorization and presentation formatting (completed)
+
+- [x] Create `src/domain/presentation.ts` module with categorization helpers
+- [x] Implement `categorizeItem()` function for international/domestic classification
+- [x] Implement `formatPriceValue()` and `formatSpreadValue()` for category-aware formatting
+- [x] Add presentation tests in `test/domain/presentation.test.ts`
+- [x] Refactor notifiers to use presentation helpers
+- [x] Move skills to `.github/skills/` directory for better organization
+
+### Current task — Google Chat cardsV2 enhancement (completed)
+
+- [x] Implement Google Chat notifier with cardsV2 format
+- [x] Add item categorization support (international/domestic-luong/domestic-chi)
+- [x] Implement color-coded price display (green for buy, orange for sell)
+- [x] Add comprehensive tests for domestic and international formatting
+- [x] Update documentation with categorization strategy

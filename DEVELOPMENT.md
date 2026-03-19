@@ -35,7 +35,7 @@
 ### Unit tests (default)
 
 - Parser tests with local HTML fixtures
-- Domain tests for normalize/metrics/format
+- Domain tests for normalize/metrics/format/presentation
 - Notifier tests with mocked `fetch`
 
 ### Live run checks (manual)
@@ -53,15 +53,36 @@ Use `pnpm run crawl` for smoke checks against real sites. Expect occasional sour
 
 ## Updating message/output behavior
 
-1. Update formatting logic in `src/domain/format.ts`
-2. Adjust/add tests in `test/domain/domain.test.ts`
-3. If output/default behavior changes, update `PROPOSAL.md`
+1. Use presentation helpers in `src/domain/presentation.ts` to categorize items and format values
+2. Update formatting logic in `src/domain/format.ts` (for table output) or specific notifiers
+3. Adjust/add tests in `test/domain/domain.test.ts` and `test/domain/presentation.test.ts`
+4. If output/default behavior changes, update `PROPOSAL.md`
+
+## Presentation and formatting strategy
+
+### Item categorization
+
+Items are categorized into three groups:
+- `international`: GoldPrice supplier items (USD/oz values, no thousand separators)
+- `domestic-luong`: Vietnam 24h supplier items (gold in lượng unit)
+- `domestic-chi`: Other domestic Vietnamese suppliers (gold in chỉ unit)
+
+Each category has appropriate number formatting rules (see `src/domain/presentation.ts`). Notifiers use these categories to format prices and spread values appropriately for each market segment.
+
+### Presentation helpers
+
+The `src/domain/presentation.ts` module provides utilities:
+- `categorizeItem()`: Classify an item by supplier/URL
+- `formatPriceValue()`: Format a number based on category
+- `formatSpreadValue()`: Format spread value (uses same rules as price)
+- `getSourceUpdatedLabel()`: Normalize source update timestamp display
 
 ## Environment notes
 
 - `.env` is loaded by `dotenv` from `src/config/env.ts`
 - If both channels are unset, run is log-only
 - Prefer GitHub Secrets for CI runtime values
+- Skills are located in `.github/skills/` for Copilot integration
 
 ## Troubleshooting
 

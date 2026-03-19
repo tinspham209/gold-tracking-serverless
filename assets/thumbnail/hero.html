@@ -3,148 +3,708 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Gold Tracking Serverless — Thumbnail Hero</title>
-		<script src="https://cdn.tailwindcss.com"></script>
+		<title>Gold Tracking Serverless v2 — Hero Thumbnail</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Cinzel:wght@400;600&family=DM+Mono:wght@300;400;500&display=swap"
+			rel="stylesheet"
+		/>
+
 		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
 			body {
-				font-family:
-					Inter,
-					ui-sans-serif,
-					system-ui,
-					-apple-system,
-					Segoe UI,
-					Roboto,
-					Helvetica,
-					Arial,
-					"Apple Color Emoji",
-					"Segoe UI Emoji";
+				background: #060604;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				font-family: "Cormorant Garamond", Georgia, serif;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			/* ── CANVAS ── */
+			.hero {
+				width: 1200px;
+				height: 630px;
+				background: #080806;
+				position: relative;
+				overflow: hidden;
+				flex-shrink: 0;
+			}
+
+			/* ── GRAIN ── */
+			.hero::after {
+				content: "";
+				position: absolute;
+				inset: 0;
+				z-index: 50;
+				pointer-events: none;
+				opacity: 0.038;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
+				background-size: 180px 180px;
+			}
+
+			/* ── RADIAL ATMOSPHERE ── */
+			.atmo {
+				position: absolute;
+				inset: 0;
+				z-index: 1;
+				background:
+					radial-gradient(
+						ellipse 680px 480px at 22% 55%,
+						rgba(180, 130, 30, 0.13) 0%,
+						transparent 65%
+					),
+					radial-gradient(
+						ellipse 440px 320px at 78% 20%,
+						rgba(100, 80, 20, 0.1) 0%,
+						transparent 60%
+					),
+					radial-gradient(
+						ellipse 300px 300px at 90% 80%,
+						rgba(60, 40, 10, 0.08) 0%,
+						transparent 55%
+					);
+			}
+
+			/* ── FINE GRID ── */
+			.grid-bg {
+				position: absolute;
+				inset: 0;
+				z-index: 2;
+				background-image:
+					linear-gradient(rgba(180, 140, 40, 0.055) 1px, transparent 1px),
+					linear-gradient(90deg, rgba(180, 140, 40, 0.055) 1px, transparent 1px);
+				background-size: 48px 48px;
+				mask-image: radial-gradient(
+					ellipse 900px 600px at 50% 50%,
+					black 30%,
+					transparent 100%
+				);
+			}
+
+			/* ── DIAGONAL ACCENT LINE ── */
+			.diag-line {
+				position: absolute;
+				z-index: 3;
+				top: -40px;
+				right: 320px;
+				width: 1px;
+				height: 800px;
+				background: linear-gradient(
+					180deg,
+					transparent 0%,
+					rgba(201, 168, 76, 0.18) 30%,
+					rgba(201, 168, 76, 0.18) 70%,
+					transparent 100%
+				);
+				transform: rotate(-12deg);
+				transform-origin: top center;
+			}
+			.diag-line-2 {
+				position: absolute;
+				z-index: 3;
+				top: -40px;
+				right: 370px;
+				width: 1px;
+				height: 800px;
+				background: linear-gradient(
+					180deg,
+					transparent 0%,
+					rgba(201, 168, 76, 0.07) 30%,
+					rgba(201, 168, 76, 0.07) 70%,
+					transparent 100%
+				);
+				transform: rotate(-12deg);
+				transform-origin: top center;
+			}
+
+			/* ── GOLD BORDER FRAME ── */
+			.frame-tl,
+			.frame-br {
+				position: absolute;
+				z-index: 4;
+				width: 44px;
+				height: 44px;
+			}
+			.frame-tl {
+				top: 28px;
+				left: 28px;
+				border-top: 1px solid rgba(201, 168, 76, 0.45);
+				border-left: 1px solid rgba(201, 168, 76, 0.45);
+			}
+			.frame-br {
+				bottom: 28px;
+				right: 28px;
+				border-bottom: 1px solid rgba(201, 168, 76, 0.45);
+				border-right: 1px solid rgba(201, 168, 76, 0.45);
+			}
+
+			/* ── CONTENT LAYER ── */
+			.content {
+				position: absolute;
+				inset: 0;
+				z-index: 10;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 52px 64px;
+				gap: 32px;
+			}
+
+			/* ── LEFT COLUMN ── */
+			.left {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 22px;
+				max-width: 620px;
+			}
+
+			/* EYEBROW */
+			.eyebrow {
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				width: fit-content;
+			}
+			.eyebrow-line {
+				width: 24px;
+				height: 1px;
+				background: linear-gradient(
+					90deg,
+					rgba(201, 168, 76, 0.6),
+					rgba(201, 168, 76, 0.2)
+				);
+			}
+			.eyebrow-diamond {
+				width: 5px;
+				height: 5px;
+				background: #c9a84c;
+				transform: rotate(45deg);
+				flex-shrink: 0;
+			}
+			.eyebrow-text {
+				font-family: "Cinzel", serif;
+				font-size: 11px;
+				letter-spacing: 0.22em;
+				color: #c9a84c;
+				text-transform: uppercase;
+			}
+
+			/* HEADLINE */
+			.headline {
+				display: flex;
+				flex-direction: column;
+				gap: 0;
+			}
+			.hl-line1 {
+				font-family: "Cormorant Garamond", serif;
+				font-weight: 700;
+				font-style: italic;
+				font-size: 74px;
+				line-height: 0.92;
+				letter-spacing: -0.02em;
+				color: #f0e4c0;
+			}
+			.hl-line2 {
+				font-family: "Cinzel", serif;
+				font-weight: 600;
+				font-size: 38px;
+				line-height: 1.1;
+				letter-spacing: 0.12em;
+				color: #e6c96a;
+				text-shadow:
+					0 0 60px rgba(230, 201, 106, 0.5),
+					0 0 20px rgba(230, 201, 106, 0.25);
+				margin-top: 4px;
+			}
+
+			/* DESCRIPTION */
+			.desc {
+				font-family: "Cormorant Garamond", serif;
+				font-size: 18px;
+				font-weight: 400;
+				line-height: 1.6;
+				color: rgba(220, 200, 160, 0.65);
+				max-width: 500px;
+				letter-spacing: 0.01em;
+			}
+
+			/* TAG ROW */
+			.tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+			}
+			.tag {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				font-family: "Cinzel", serif;
+				font-size: 9px;
+				letter-spacing: 0.18em;
+				padding: 5px 11px;
+				border-radius: 3px;
+				border: 1px solid;
+				text-transform: uppercase;
+			}
+			.tag-dot {
+				width: 3px;
+				height: 3px;
+				border-radius: 50%;
+				flex-shrink: 0;
+			}
+			.tag-gold {
+				color: #c9a84c;
+				border-color: rgba(201, 168, 76, 0.28);
+				background: rgba(201, 168, 76, 0.07);
+			}
+			.tag-gold .tag-dot {
+				background: #c9a84c;
+			}
+			.tag-green {
+				color: #6ee7b7;
+				border-color: rgba(110, 231, 183, 0.22);
+				background: rgba(110, 231, 183, 0.05);
+			}
+			.tag-green .tag-dot {
+				background: #6ee7b7;
+			}
+			.tag-sky {
+				color: #93c5fd;
+				border-color: rgba(147, 197, 253, 0.22);
+				background: rgba(147, 197, 253, 0.05);
+			}
+			.tag-sky .tag-dot {
+				background: #93c5fd;
+			}
+			.tag-rose {
+				color: #fca5a5;
+				border-color: rgba(252, 165, 165, 0.22);
+				background: rgba(252, 165, 165, 0.05);
+			}
+			.tag-rose .tag-dot {
+				background: #fca5a5;
+			}
+
+			/* ── RIGHT COLUMN — DATA CARD ── */
+			.right {
+				width: 360px;
+				flex-shrink: 0;
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+			}
+
+			.data-card {
+				background: rgba(14, 12, 8, 0.92);
+				border: 1px solid rgba(201, 168, 76, 0.2);
+				border-radius: 10px;
+				overflow: hidden;
+				box-shadow:
+					0 0 0 1px rgba(201, 168, 76, 0.06),
+					0 24px 60px rgba(0, 0, 0, 0.7),
+					inset 0 1px 0 rgba(201, 168, 76, 0.08);
+				position: relative;
+			}
+			.data-card::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(
+					135deg,
+					rgba(201, 168, 76, 0.05) 0%,
+					transparent 45%
+				);
+				pointer-events: none;
+				border-radius: inherit;
+			}
+
+			/* card header */
+			.card-hd {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 12px 16px;
+				border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+			}
+			.card-hd-left {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+			.card-hd-diamond {
+				width: 4px;
+				height: 4px;
+				background: #c9a84c;
+				transform: rotate(45deg);
+			}
+			.card-hd-title {
+				font-family: "Cinzel", serif;
+				font-size: 9px;
+				letter-spacing: 0.22em;
+				color: rgba(201, 168, 76, 0.7);
+				text-transform: uppercase;
+			}
+			.status-ok {
+				display: inline-flex;
+				align-items: center;
+				gap: 5px;
+				font-family: "Cinzel", serif;
+				font-size: 8px;
+				letter-spacing: 0.16em;
+				color: #6ee7b7;
+				border: 1px solid rgba(110, 231, 183, 0.25);
+				background: rgba(110, 231, 183, 0.06);
+				border-radius: 3px;
+				padding: 3px 8px;
+			}
+			.live-dot {
+				width: 5px;
+				height: 5px;
+				border-radius: 50%;
+				background: #6ee7b7;
+				box-shadow: 0 0 6px rgba(110, 231, 183, 0.6);
+			}
+
+			/* table */
+			.ctable {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			.ctable thead th {
+				font-family: "Cinzel", serif;
+				font-size: 8px;
+				letter-spacing: 0.18em;
+				color: rgba(201, 168, 76, 0.35);
+				text-align: left;
+				padding: 7px 16px;
+				font-weight: 400;
+				border-bottom: 1px solid rgba(201, 168, 76, 0.07);
+			}
+			.ctable thead th:not(:first-child) {
+				text-align: right;
+			}
+
+			.ctable tbody tr {
+				border-bottom: 1px solid rgba(201, 168, 76, 0.05);
+				transition: background 0.15s;
+			}
+			.ctable tbody tr:last-child {
+				border-bottom: none;
+			}
+
+			.ctable tbody td {
+				padding: 9px 16px;
+				font-family: "DM Mono", monospace;
+				font-size: 12px;
+				color: rgba(220, 200, 160, 0.8);
+				vertical-align: middle;
+			}
+			.ctable tbody td:not(:first-child) {
+				text-align: right;
+			}
+
+			.src-name {
+				font-family: "Cormorant Garamond", serif;
+				font-size: 13.5px;
+				font-weight: 600;
+				color: #e8d8a8;
+				display: flex;
+				align-items: center;
+				gap: 7px;
+			}
+			.src-dot {
+				width: 3px;
+				height: 3px;
+				border-radius: 50%;
+				background: rgba(201, 168, 76, 0.5);
+			}
+			.spread {
+				color: #e6c96a;
+				font-weight: 500;
+			}
+
+			/* card footer */
+			.card-ft {
+				padding: 8px 16px;
+				background: rgba(201, 168, 76, 0.03);
+				border-top: 1px solid rgba(201, 168, 76, 0.08);
+				font-family: "DM Mono", monospace;
+				font-size: 10px;
+				color: rgba(201, 168, 76, 0.3);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+
+			/* sparkline mini */
+			.spark-card {
+				background: rgba(14, 12, 8, 0.7);
+				border: 1px solid rgba(201, 168, 76, 0.14);
+				border-radius: 10px;
+				padding: 12px 16px;
+				display: flex;
+				align-items: center;
+				gap: 14px;
+				box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+			}
+			.spark-info {
+				flex-shrink: 0;
+			}
+			.spark-label {
+				font-family: "Cinzel", serif;
+				font-size: 8px;
+				letter-spacing: 0.18em;
+				color: rgba(201, 168, 76, 0.4);
+				text-transform: uppercase;
+			}
+			.spark-val {
+				font-family: "DM Mono", monospace;
+				font-size: 20px;
+				font-weight: 500;
+				color: #f0d080;
+				text-shadow: 0 0 24px rgba(240, 208, 128, 0.4);
+				line-height: 1.1;
+				margin-top: 1px;
+			}
+			.spark-delta {
+				font-family: "DM Mono", monospace;
+				font-size: 10px;
+				color: #6ee7b7;
+				margin-top: 2px;
+			}
+
+			/* ── BOTTOM RULE ── */
+			.bottom-rule {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				z-index: 10;
+				height: 2px;
+				background: linear-gradient(
+					90deg,
+					transparent 0%,
+					rgba(201, 168, 76, 0.5) 20%,
+					rgba(240, 208, 128, 0.8) 50%,
+					rgba(201, 168, 76, 0.5) 80%,
+					transparent 100%
+				);
+			}
+
+			/* ── VERSION BADGE ── */
+			.version-badge {
+				position: absolute;
+				bottom: 34px;
+				left: 64px;
+				z-index: 15;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				font-family: "Cinzel", serif;
+				font-size: 9px;
+				letter-spacing: 0.18em;
+				color: rgba(201, 168, 76, 0.35);
+			}
+			.vb-line {
+				width: 20px;
+				height: 1px;
+				background: rgba(201, 168, 76, 0.25);
 			}
 		</style>
 	</head>
-	<body class="m-0 min-h-screen bg-slate-950 text-slate-100 antialiased">
-		<main
-			class="relative mx-auto h-[630px] w-[1200px] overflow-hidden bg-slate-950"
-		>
-			<div
-				class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(234,179,8,0.18),transparent_40%),radial-gradient(circle_at_85%_15%,rgba(56,189,248,0.2),transparent_42%),radial-gradient(circle_at_65%_90%,rgba(168,85,247,0.15),transparent_35%)]"
-			></div>
-			<div
-				class="absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.09)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.09)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(circle_at_center,black_55%,transparent_100%)]"
-			></div>
 
-			<section class="relative z-10 flex h-full items-center px-16 py-14">
-				<div class="flex w-full items-center justify-between gap-10">
-					<div class="max-w-[700px] space-y-7">
-						<div
-							class="inline-flex items-center gap-3 rounded-full border border-cyan-400/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-medium text-cyan-200"
-						>
-							<span class="h-2 w-2 rounded-full bg-emerald-300"></span>
-							Vietnamese Gold Tracking Alerts
+	<body>
+		<div class="hero">
+			<!-- Atmosphere layers -->
+			<div class="atmo"></div>
+			<div class="grid-bg"></div>
+			<div class="diag-line"></div>
+			<div class="diag-line-2"></div>
+
+			<!-- Corner frame marks -->
+			<div class="frame-tl"></div>
+			<div class="frame-br"></div>
+
+			<!-- Bottom accent line -->
+			<div class="bottom-rule"></div>
+
+			<!-- Version badge -->
+			<div class="version-badge">
+				<div class="vb-line"></div>
+				v2.0 · SERVERLESS · CLOUD RUN
+			</div>
+
+			<!-- Main content -->
+			<div class="content">
+				<!-- LEFT -->
+				<div class="left">
+					<div class="eyebrow">
+						<div class="eyebrow-line"></div>
+						<div class="eyebrow-diamond"></div>
+						<span class="eyebrow-text">Vietnamese Gold Tracking</span>
+					</div>
+
+					<div class="headline">
+						<div class="hl-line1">Gold Tracking</div>
+						<div class="hl-line2">SERVERLESS</div>
+					</div>
+
+					<p class="desc">
+						Monitor multi-supplier gold prices every 3 hours, compute spread in
+						memory, and push instant alerts to your team channels.
+					</p>
+
+					<div class="tags">
+						<div class="tag tag-gold">
+							<div class="tag-dot"></div>
+							Serverless · Stateless
+						</div>
+						<div class="tag tag-green">
+							<div class="tag-dot"></div>
+							Runs every 3 hours
+						</div>
+						<div class="tag tag-sky">
+							<div class="tag-dot"></div>
+							5 suppliers tracked
+						</div>
+						<div class="tag tag-gold">
+							<div class="tag-dot"></div>
+							Google Chat + Telegram
+						</div>
+						<div class="tag tag-rose">
+							<div class="tag-dot"></div>
+							ok · partial · failed
+						</div>
+					</div>
+				</div>
+
+				<!-- RIGHT -->
+				<div class="right">
+					<!-- Supplier snapshot card -->
+					<div class="data-card">
+						<div class="card-hd">
+							<div class="card-hd-left">
+								<div class="card-hd-diamond"></div>
+								<span class="card-hd-title">Live Snapshot</span>
+							</div>
+							<div class="status-ok">
+								<div class="live-dot"></div>
+								ok
+							</div>
 						</div>
 
-						<div class="space-y-4">
-							<h1
-								class="text-6xl font-black leading-[1.04] tracking-tight text-white"
-							>
-								Gold Tracking <span class="text-amber-300">Serverless</span>
-							</h1>
-							<p class="max-w-[640px] text-xl leading-relaxed text-slate-200">
-								Monitor multi-supplier gold prices every 3 hours, compute spread
-								in memory, and push instant alerts to your team channels.
-							</p>
-						</div>
+						<table class="ctable">
+							<thead>
+								<tr>
+									<th>Source</th>
+									<th>Buy</th>
+									<th>Sell</th>
+									<th>Spread</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<div class="src-name">
+											<div class="src-dot"></div>
+											GoldPrice
+										</div>
+									</td>
+									<td>117.0</td>
+									<td>119.0</td>
+									<td><span class="spread">2.0</span></td>
+								</tr>
+								<tr>
+									<td>
+										<div class="src-name">
+											<div class="src-dot"></div>
+											GoldVN 24H
+										</div>
+									</td>
+									<td>115.8</td>
+									<td>117.9</td>
+									<td><span class="spread">2.1</span></td>
+								</tr>
+								<tr>
+									<td>
+										<div class="src-name">
+											<div class="src-dot"></div>
+											KKVH
+										</div>
+									</td>
+									<td>116.1</td>
+									<td>118.2</td>
+									<td><span class="spread">2.1</span></td>
+								</tr>
+							</tbody>
+						</table>
 
-						<div class="flex flex-wrap gap-3 text-sm font-semibold">
-							<div
-								class="rounded-xl border border-amber-300/35 bg-amber-300/10 px-4 py-2 text-amber-200"
-							>
-								Serverless + Stateless
-							</div>
-							<div
-								class="rounded-xl border border-cyan-300/35 bg-cyan-300/10 px-4 py-2 text-cyan-200"
-							>
-								Runs every 3 hours
-							</div>
-							<div
-								class="rounded-xl border border-emerald-300/35 bg-emerald-300/10 px-4 py-2 text-emerald-200"
-							>
-								5 suppliers tracked
-							</div>
-							<div
-								class="rounded-xl border border-fuchsia-300/35 bg-fuchsia-300/10 px-4 py-2 text-fuchsia-200"
-							>
-								Google Chat + Telegram
-							</div>
-							<div
-								class="rounded-xl border border-indigo-300/35 bg-indigo-300/10 px-4 py-2 text-indigo-200"
-							>
-								Status: ok | partial | failed
-							</div>
+						<div class="card-ft">
+							<span>Crawl: 2026-03-19 · 14:00 UTC+7</span>
+							<span>5 sources</span>
 						</div>
 					</div>
 
-					<aside
-						class="w-[410px] rounded-2xl border border-slate-700/60 bg-slate-900/80 p-5 shadow-2xl shadow-sky-900/20 backdrop-blur"
-					>
-						<div class="mb-4 flex items-center justify-between">
-							<h2
-								class="text-sm font-semibold uppercase tracking-widest text-slate-300"
-							>
-								Live Snapshot
-							</h2>
-							<span
-								class="rounded-full border border-emerald-300/30 bg-emerald-300/10 px-2 py-1 text-xs font-semibold text-emerald-200"
-								>ok</span
-							>
+					<!-- Sparkline mini-card -->
+					<div class="spark-card">
+						<div class="spark-info">
+							<div class="spark-label">SJC · MUA VÀO</div>
+							<div class="spark-val">117.000</div>
+							<div class="spark-delta">▲ +1.200 · +1.04%</div>
 						</div>
 
-						<div class="space-y-3 text-[13px]">
-							<div
-								class="grid grid-cols-[1.2fr_1fr_1fr_0.8fr] gap-2 rounded-lg bg-slate-800/70 px-3 py-2 font-semibold text-slate-300"
-							>
-								<span>Source</span>
-								<span>Buy</span>
-								<span>Sell</span>
-								<span>Spread</span>
-							</div>
-
-							<div
-								class="grid grid-cols-[1.2fr_1fr_1fr_0.8fr] gap-2 rounded-lg border border-slate-700/70 bg-slate-900/80 px-3 py-2 text-slate-200"
-							>
-								<span>GoldPrice</span>
-								<span>117.0</span>
-								<span>119.0</span>
-								<span class="font-semibold text-amber-200">2.0</span>
-							</div>
-
-							<div
-								class="grid grid-cols-[1.2fr_1fr_1fr_0.8fr] gap-2 rounded-lg border border-slate-700/70 bg-slate-900/80 px-3 py-2 text-slate-200"
-							>
-								<span>GoldVN 24H</span>
-								<span>115.8</span>
-								<span>117.9</span>
-								<span class="font-semibold text-amber-200">2.1</span>
-							</div>
-
-							<div
-								class="grid grid-cols-[1.2fr_1fr_1fr_0.8fr] gap-2 rounded-lg border border-slate-700/70 bg-slate-900/80 px-3 py-2 text-slate-200"
-							>
-								<span>KKVH</span>
-								<span>116.1</span>
-								<span>118.2</span>
-								<span class="font-semibold text-amber-200">2.1</span>
-							</div>
-						</div>
-
-						<div
-							class="mt-4 rounded-lg border border-slate-700/70 bg-slate-800/70 px-3 py-2 text-xs text-slate-300"
+						<svg
+							viewBox="0 0 200 52"
+							preserveAspectRatio="none"
+							style="flex: 1; height: 52px"
+							xmlns="http://www.w3.org/2000/svg"
 						>
-							Crawl at: 2026-03-04 14:00 (UTC+7) · Updated At included per
-							source
-						</div>
-					</aside>
+							<defs>
+								<linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+									<stop offset="0%" stop-color="#C9A84C" stop-opacity="0.3" />
+									<stop offset="100%" stop-color="#C9A84C" stop-opacity="0" />
+								</linearGradient>
+								<filter id="gl">
+									<feGaussianBlur stdDeviation="1.5" result="b" />
+									<feMerge>
+										<feMergeNode in="b" />
+										<feMergeNode in="SourceGraphic" />
+									</feMerge>
+								</filter>
+							</defs>
+							<path
+								d="M0,42 L25,38 L50,35 L70,28 L90,31 L110,22 L130,14 L150,18 L170,12 L200,6 L200,52 L0,52 Z"
+								fill="url(#sg)"
+							/>
+							<path
+								d="M0,42 L25,38 L50,35 L70,28 L90,31 L110,22 L130,14 L150,18 L170,12 L200,6"
+								fill="none"
+								stroke="#E6C96A"
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								filter="url(#gl)"
+							/>
+							<circle
+								cx="200"
+								cy="6"
+								r="2.5"
+								fill="#F0D080"
+								filter="url(#gl)"
+							/>
+						</svg>
+					</div>
 				</div>
-			</section>
-		</main>
+			</div>
+		</div>
 	</body>
 </html>

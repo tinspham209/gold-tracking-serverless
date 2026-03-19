@@ -53,10 +53,11 @@ Run a scheduled, serverless crawler that extracts selected gold prices from conf
 - `src/domain/normalize.ts`: numeric/time normalization
 - `src/domain/metrics.ts`: spread calculation
 - `src/domain/format.ts`: final user-facing message formatting
+- `src/domain/presentation.ts`: item categorization and presentation formatting helpers (international vs domestic pricing, number formatting by category)
 
 ### Notify
 
-- `src/notify/googleChat.ts`
+- `src/notify/googleChat.ts`: Google Chat notifier with cardsV2 format, supports international/domestic categorization
 - `src/notify/telegram.ts`
 - `src/notify/types.ts`
 
@@ -87,6 +88,17 @@ Run a scheduled, serverless crawler that extracts selected gold prices from conf
 - `suppliersSucceeded`
 - `suppliersFailed`
 - `errors[]`
+
+
+## Item categorization and presentation
+
+Gold items are automatically categorized during notification based on supplier:
+
+- **International**: GoldPrice items (USD/oz format, no thousand separators)
+- **Domestic-luong**: Vietnam 24h supplier items (gold lượng unit, formatted with thousand separators)
+- **Domestic-chi**: Other domestic suppliers (gold chỉ unit, formatted with thousand separators)
+
+Each category receives appropriate formatting for prices and spread values. Google Chat notifier uses cardsV2 format with color-coded price display (green for buy, orange for sell).
 
 ## Reliability policies
 
