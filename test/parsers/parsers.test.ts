@@ -24,15 +24,18 @@ const fakePage = (text: string): Page => {
 };
 
 describe("supplier parsers", () => {
-	it("parses 24h rows for SJC and PNJ Hà Nội", async () => {
+	it("parses 24h rows for SJC, PNJ Hà Nội and DOJI HN", async () => {
 		const supplier = SUPPLIERS.find((item) => item.supplierId === "24H")!;
 		const rows = await parse24h(fakePage(fixture("24h.html")), supplier);
 
-		expect(rows).toHaveLength(2);
+		expect(rows).toHaveLength(3);
 		expect(rows[0].product).toBe("SJC");
 		expect(rows[0].buyRaw).toBe("186,400");
 		expect(rows[0].sellRaw).toBe("189,400");
 		expect(rows[1].product).toBe("PNJ Hà Nội");
+		expect(rows[2].product).toBe("DOJI HN");
+		expect(rows[2].buyRaw).toBe("186,300");
+		expect(rows[2].sellRaw).toBe("189,300");
 	});
 
 	it("parses Kim Khánh Việt Hùng row", async () => {

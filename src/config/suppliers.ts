@@ -23,7 +23,7 @@ export const SUPPLIERS: SupplierTarget[] = [
 		supplierId: "24H",
 		supplierName: "GoldVN 24H",
 		sourceUrl: "https://www.24h.com.vn/gia-vang-hom-nay-c425.html",
-		products: ["SJC", "PNJ Hà Nội"],
+		products: ["SJC", "PNJ Hà Nội", "DOJI HN"],
 	},
 	{
 		supplierId: "KIM_KHANH_VIET_HUNG",
